@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 80%;
+            max-width: 600px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>List of Registered Users</h1>
+
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- User rows will be inserted here -->
+        </tbody>
+    </table>
+
+    <button class="back-button" onclick="goBack()">Back to Registration</button>
+
+    <script>
+        // Dummy data for demonstration purposes
+        const users = [
+            { id: 1, username: 'john_doe', email: 'john@example.com' },
+            { id: 2, username: 'jane_doe', email: 'jane@example.com' },
+            { id: 3, username: 'sam_smith', email: 'sam@example.com' }
+        ];
+
+        // Function to populate the table with user data
+        function populateUserList() {
+            const tableBody = document.querySelector('#userTable tbody');
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.username}</td>
+                    <td>${user.email}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Go back to the registration page
+        function goBack() {
+            window.location.href = 'index.html'; // Adjust if your registration page has a different name or path
+        }
+
+        // Populate the user list on page load
+        window.onload = populateUserList;
+    </script>
+</body>
+</html>

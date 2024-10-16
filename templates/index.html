@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+
+    <script>
+        async function registerUser(event) {
+            event.preventDefault(); // Prevent the form from submitting in the traditional way
+
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const email = document.getElementById("email").value.trim();
+
+            // Basic front-end validation
+            if (!username || !password || !email) {
+                displayMessage("All fields are required.", "alert");
+                return;
+            }
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password, email }),
+                });
+
+                const result = await response.json();
+
+                if (response.status === 201) {
+                    displayMessage(result.message, "success");
+
+                    // Redirect to user list page (Flask route)
+                    window.location.href = "http://127.0.0.1:5000/user-list"; // Use Flask route instead of .html
+                } else {
+                    displayMessage(result.error, "alert");
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                displayMessage("An error occurred while registering. Please try again.", "alert");
+            }
+        }
+
+        function displayMessage(message, type) {
+            const messageBox = document.getElementById("messageBox");
+            messageBox.textContent = message;
+            messageBox.className = type === "alert" ? "alert" : "success";
+            messageBox.style.display = "block";
+        }
+    </script>
+</head>
+<body>
+    <h1>User Registration</h1>
+    
+    <!-- Message box for feedback -->
+    <div id="messageBox" style="display:none;"></div>
+
+    <form id="registrationForm" onsubmit="registerUser(event)">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

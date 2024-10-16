@@ -1,9 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 import psycopg2
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 
 app = Flask(__name__)
+CORS(app)
 
 # Database connection
 def get_db_connection():
@@ -27,6 +29,20 @@ def is_valid_password(password: str) -> bool:
     has_number = re.search(r"\d", password) is not None
     has_special = re.search(r"\W", password) is not None
     return has_length and has_number and has_special
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')  # Render the registration form
+
+@app.route('/user-list')
+def user_list():
+    # Simulate a list of users for now
+    users = [
+        {'id': 1, 'username': 'john_doe', 'email': 'john@example.com'},
+        {'id': 2, 'username': 'jane_doe', 'email': 'jane@example.com'}
+    ]
+    return render_template('user-list.html', users=users)
 
 
 @app.route('/register', methods=['POST'])
