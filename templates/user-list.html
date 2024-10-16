@@ -75,6 +75,15 @@
             {% endfor %}
         </tbody>
     </table>
+
+     <button class="back-button" onclick="goBack()">Back to Registration</button>
+
+     <script>
+        function goBack() {
+            window.location.href = '/';  // Redirect to the root route of your Flask app
+        }
+     </script>
+
 </body>
 </html>
 
