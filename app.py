@@ -35,14 +35,32 @@ def is_valid_password(password: str) -> bool:
 def index():
     return render_template('index.html')  # Render the registration form
 
+
 @app.route('/user-list')
 def user_list():
-    # Simulate a list of users for now
-    users = [
-        {'id': 1, 'username': 'john_doe', 'email': 'john@example.com'},
-        {'id': 2, 'username': 'jane_doe', 'email': 'jane@example.com'}
-    ]
-    return render_template('user-list.html', users=users)
+    conn = get_db_connection()  # Get the DB connection
+    cur = conn.cursor()
+    
+    try:
+        # Query the database for users
+        cur.execute("SELECT id, username, email FROM users")
+        users = cur.fetchall()  # Fetch all users
+        
+        # Pass the users to the template
+        return render_template('user-list.html', users=users)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
+# @app.route('/user-list')
+# def user_list():
+#     # Simulate a list of users for now
+#     users = [
+#         {'id': 1, 'username': 'john_doe', 'email': 'john@example.com'},
+#         {'id': 2, 'username': 'jane_doe', 'email': 'jane@example.com'}
+#     ]
+#     return render_template('user-list.html', users=users)
 
 
 @app.route('/register', methods=['POST'])
